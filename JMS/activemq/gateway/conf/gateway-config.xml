@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Copyright 2007-2017, Kaazing Corporation. All rights reserved.
+
+-->
+<gateway-config xmlns="http://xmlns.kaazing.org/2016/06/gateway">
+
+  <!--
+  #############################################################################
+  #############################################################################
+
+                Kaazing WebSocket Gateway Configuration File
+
+    See Kaazing Documentation for details: http://kaazing.com/documentation
+
+  #############################################################################
+  #############################################################################
+  -->
+
+  <properties>
+
+    <property>
+      <name>gateway.hostname</name>
+      <value>localhost</value>
+    </property>
+
+    <property>
+      <name>gateway.port</name>
+      <value>8000</value>
+    </property>
+
+  </properties>
+
+
+  <service>
+    <name>welcome-directory</name>
+    <description>Directory service for welcome page</description>
+    <accept>http://${gateway.hostname}:${gateway.port}/</accept>
+
+    <type>directory</type>
+
+    <properties>
+      <directory>/welcome</directory>
+      <welcome-file>index.html</welcome-file>
+      <error-pages-directory>/error-pages</error-pages-directory>
+      <options>indexes</options>
+      <location>
+        <patterns>**/*</patterns>
+        <cache-control>max-age=0</cache-control>
+      </location>
+    </properties>
+  </service>
+
+
+  <service>
+    <name>echo</name>
+    <description>Simple echo service</description>
+    <accept>ws://${gateway.hostname}:${gateway.port}/echo</accept>
+
+    <type>echo</type>
+
+    <!-- Restrict cross site constraints before running in production -->
+    <cross-site-constraint>
+      <!-- * is not secure for production javascript applications -->
+      <allow-origin>*</allow-origin>
+    </cross-site-constraint>
+  </service>
+
+
+  <service>
+    <name>jms-directory</name>
+    <description>Directory service for JMS demo</description>
+    <accept>http://${gateway.hostname}:${gateway.port}/jms</accept>
+
+    <type>directory</type>
+
+    <properties>
+      <directory>/jms</directory>
+      <welcome-file>index.html</welcome-file>
+      <error-pages-directory>/error-pages</error-pages-directory>
+      <options>indexes</options>
+      <location>
+        <patterns>**/*</patterns>
+        <cache-control>max-age=0</cache-control>
+      </location>
+    </properties>
+  </service>
+
+
+  <service>
+    <name>JMS Demo Service</name>
+    <description>A demo JMS service</description>
+    <accept>ws://kaazing.example.com:8000/jms</accept>
+
+    <type>jms</type>
+
+    <properties>
+      <connection.factory.name>ConnectionFactory</connection.factory.name>
+      <context.lookup.topic.format>dynamicTopics/%s</context.lookup.topic.format>
+      <context.lookup.queue.format>dynamicQueues/%s</context.lookup.queue.format>
+      <env.java.naming.factory.initial>org.apache.activemq.jndi.ActiveMQInitialContextFactory</env.java.naming.factory.initial>
+      <env.java.naming.provider.url>tcp://activemq:61616</env.java.naming.provider.url>
+      <!-- Credentials are necessary because of the ActiveMQ configuration -->
+      <connection.security.principal>admin</connection.security.principal>
+      <connection.security.credentials>admin</connection.security.credentials>
+    </properties>
+
+    <cross-site-constraint>
+      <!-- Only websockets coming from this origin can access this url -->
+      <allow-origin>*</allow-origin>
+    </cross-site-constraint>
+  </service>
+
+
+
+</gateway-config>
