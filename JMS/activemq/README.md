@@ -2,7 +2,7 @@
 
 This tutorial shows how to subscribe and publish data from HTML5 clients to a JMS broker via Kaazing Gateway.
 
-### Getting Started
+## Getting Started
 
 To run this example:
 
@@ -39,7 +39,7 @@ The Gateway container will run a `jms` service that enables WebSocket clients to
 </service>
 ```
 
-### Run
+## Run
 
 1. Start the containers
   ```bash
@@ -75,3 +75,16 @@ The Gateway container will run a `jms` service that enables WebSocket clients to
 11. Go back to your first browser tab and see that it received the message. It had done a round trip from the second browser tab, through Kaazing Gateway, to the JMS broker, then back through Kaazing Gateway to the first browser tab.
 
     If you had also subscribed to the same topic in the browser tab, you'd see the message displayed there, too, having made the same round trip.
+
+## More detail
+
+The gateway installation includes a `conf` directory containing files that control your gateway's configuration. Look at the Docker Compose file, [docker-compose.yml](docker-compose.yml), to see how the default files are overriden.
+
+Look at the `volumes` section of the `gateway` service:
+
+```yml
+    volumes:
+      - ./gateway/conf/gateway-config.xml:/kaazing-gateway/conf/gateway-config.xml:ro
+```
+
+That shows how to override the `gateway-config.xml` configuration file with your own. You can do the same thing for other configuration files usually used in gateway configurations, like a keystore and truststore, log configuration, etc.
