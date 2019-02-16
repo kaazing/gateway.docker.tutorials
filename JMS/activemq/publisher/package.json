@@ -1,0 +1,21 @@
+{
+  "name": "publisher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "subscribe": "node subscribe.js",
+    "publish": "nodemon publish.js",
+    "start": "forever --minUptime 1000 --spinSleepTime 1000 publish.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "forever": "^0.15.3",
+    "stompit": "^0.26.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}

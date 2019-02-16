@@ -1,9 +1,28 @@
-version: '2'
+version: '3'
 services:
+
   gateway:
     build: gateway
+    hostname: kaazing.example.com
+    volumes:
+      - ./gateway/conf/gateway-config.xml:/kaazing-gateway/conf/gateway-config.xml:ro
+      - ./gateway/web/jms:/kaazing-gateway/web/jms
     ports:
-      - "8000:8000"
-    hostname: "kaazing.example.com"
+      - 8000:8000
+
   activemq:
-    image: webcenter/activemq:latest
+    image: webcenter/activemq:5.14.3
+    ports:
+      - 8161:8161
+      - 61613:61613
+      - 61616:61616
+
+  publisher:
+    image: node:8-alpine
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./publisher:/home/node/app
+    command: "npm start"
