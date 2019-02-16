@@ -43,7 +43,13 @@ The Gateway container will run a `jms` service that enables WebSocket clients to
 
 1. Start the containers
   ```bash
-  docker-compose up -d
+  docker-compose up -d --build
+  ```
+
+  If you want to see the logs while the containers start, run:
+
+  ```bash
+  docker-compose logs -f
   ```
 
 2. Once all three containers are running, connect to the Gateway in a browser via [https://kaazing.example.com:8000/](https://kaazing.example.com:8000/).
