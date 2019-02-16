@@ -10,3 +10,4 @@
 *.sublime-workspace
 .gradle
 x509/
+node_modules
